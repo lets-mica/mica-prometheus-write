@@ -1,5 +1,3 @@
-
-
 # Mica-Prometheus-Write
 
 Mica-Prometheus-Write 是一个用于处理 Prometheus 远程写入请求的 Java 实现项目。该项目主要用于接收 Prometheus 的远程写入数据，解码并处理这些数据，可以用于构建 Prometheus 数据的存储后端或转发服务。
@@ -10,7 +8,7 @@ Mica-Prometheus-Write 是一个用于处理 Prometheus 远程写入请求的 Jav
 - 提供基于 Protobuf 的数据结构，用于解析和构建 Prometheus 的写入请求。
 - 提供 HTTP 接口处理 Prometheus 的远程写入请求。
 - 包含 Snappy 压缩解压工具，支持解压远程写入数据。
-- 提供详细的 MetricMetadata、TimeSeries、Sample �
+- 提供详细的 MetricMetadata、TimeSeries、Sample
 - 支持扩展，可轻松集成到其他存储系统或数据转发服务中。
 
 ## 安装
@@ -53,6 +51,15 @@ List<Map<String, Object>> decoded = PromPbUtils.decodeWriteRequestV2(data);
 
 - Protobuf 用于处理数据结构。
 - Snappy 用于解压远程写入请求的压缩数据。
+
+## 配置（prometheus.yml）
+
+```yml
+# 开启远程写出
+remote_write:
+  - url: "http://127.0.0.1:8080/write"
+#    protobuf_message: io.prometheus.write.v2.Request # 开启 prometheus v2 版 protobuf 消息格式，v2 版消息更加紧凑，默认：v1
+```
 
 ## 许可证
 
