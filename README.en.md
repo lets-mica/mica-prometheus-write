@@ -1,5 +1,3 @@
-
-
 # Mica-Prometheus-Write
 
 Mica-Prometheus-Write is a Java implementation project for handling Prometheus remote write requests. This project is primarily used to receive Prometheus remote write data, decode and process it, and can be used to build storage backends or forwarding services for Prometheus data.
@@ -18,7 +16,7 @@ Mica-Prometheus-Write is a Java implementation project for handling Prometheus r
 The project is built using Maven and can be built directly with the following command:
 
 ```bash
-mvn clean install
+mvn clean package
 ```
 
 ## Usage
@@ -35,15 +33,6 @@ mvn clean install
 4. **Parse Request Body**  
    The `PromPbUtils` class provides methods to decode Prometheus write requests for both version v1 and v2.
 
-## Example
-
-The following is an example of how to use `PromPbUtils` to decode a remote write request:
-
-```java
-byte[] data = // byte data from the Prometheus write request
-List<Map<String, Object>> decoded = PromPbUtils.decodeWriteRequestV2(data);
-```
-
 ## Directory Structure
 
 - `mica-prometheus-write-core`: Core module containing Protobuf-compiled generated classes for handling Prometheus data models.
@@ -54,14 +43,15 @@ List<Map<String, Object>> decoded = PromPbUtils.decodeWriteRequestV2(data);
 - Protobuf for handling data structures.
 - Snappy for decompressing compressed data from remote write requests.
 
+## config（prometheus.yml）
+
+```yml
+# enable prometheus remote write
+remote_write:
+  - url: "http://127.0.0.1:8080/write"
+#    protobuf_message: io.prometheus.write.v2.Request # enable prometheus v2 protobuf message，default：v1
+```
+
 ## License
 
 This project uses the Apache-2.0 license. Please see the `LICENSE` file for details.
-
-## Contributions
-
-Code contributions are welcome! To contribute, please submit a Pull Request to this project's Gitee repository.
-
-## Contact
-
-If you have any questions, feel free to submit an Issue on Gitee or contact the project maintainer.

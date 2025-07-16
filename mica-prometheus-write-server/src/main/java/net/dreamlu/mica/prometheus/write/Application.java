@@ -21,7 +21,7 @@ public class Application {
 		ConfigLoader config = new ConfigLoader();
 		// 2. 配置 kafka 生产者实例
 		Properties kafkaProperties = config.getKafkaProperties();
-		Producer<String, byte[]> producer = new KafkaProducer<>(kafkaProperties);
+		Producer<String, Object> producer = new KafkaProducer<>(kafkaProperties);
 		// 3. 启动服务
 		PrometheusWriteHandler handler = new PrometheusWriteHandler(config, producer);
 		HttpServerStarter httpServerStarter = new HttpServerStarter(config.getServerPort(), handler);

@@ -16,7 +16,7 @@ Mica-Prometheus-Write 是一个用于处理 Prometheus 远程写入请求的 Jav
 项目使用 Maven 构建，可以直接通过以下命令进行构建：
 
 ```bash
-mvn clean install
+mvn clean package
 ```
 
 ## 使用
@@ -28,19 +28,10 @@ mvn clean install
    `PrometheusWriteHandler` 实现了 `HttpRequestHandler` 接口，用于接收并处理 Prometheus 的远程写入请求。
 
 3. **解压数据**  
-   `SnappyUtils` 类提供了 Snappy 厶缩数据的解压方法。
+   `SnappyUtils` 类提供了 Snappy 压缩数据的解压方法。
 
 4. **解析请求体**  
    `PromPbUtils` 类提供了解码 Prometheus v1 和 v2 版本写入请求的方法。
-
-## 示例
-
-以下是如何使用 `PromPbUtils` 解码远程写入请求的示例：
-
-```java
-byte[] data = // Prometheus 写入请求的 byte 数据
-List<Map<String, Object>> decoded = PromPbUtils.decodeWriteRequestV2(data);
-```
 
 ## 目录结构
 
@@ -64,11 +55,3 @@ remote_write:
 ## 许可证
 
 本项目使用 Apache-2.0 协议。详见 `LICENSE` 文件。
-
-## 贡献
-
-欢迎贡献代码！如需贡献，请提交 Pull Request 到本项目的 Gitee 仓库。
-
-## 联系
-
-如有任何问题，欢迎在 Gitee 上提交 Issue 或联系项目维护者。
