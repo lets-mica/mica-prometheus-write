@@ -1,8 +1,11 @@
 package net.dreamlu.mica.prometheus.write.handler;
 
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import net.dreamlu.mica.prometheus.write.config.ConfigLoader;
 import net.dreamlu.mica.prometheus.write.utils.PromPbUtils;
 import net.dreamlu.mica.prometheus.write.utils.SnappyUtils;
+import org.apache.kafka.clients.producer.Producer;
 import org.tio.http.common.HttpRequest;
 import org.tio.http.common.HttpResponse;
 import org.tio.http.common.HttpResponseStatus;
@@ -18,7 +21,10 @@ import java.util.Map;
  * @author L.cm
  */
 @Slf4j
+@RequiredArgsConstructor
 public class PrometheusWriteHandler implements HttpRequestHandler {
+	private final ConfigLoader config;
+	private final Producer<String, byte[]> producer;
 
 	@Override
 	public HttpResponse handler(HttpRequest request) throws Exception {
