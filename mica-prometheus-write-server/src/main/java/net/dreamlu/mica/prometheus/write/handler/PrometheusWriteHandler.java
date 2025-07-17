@@ -75,6 +75,7 @@ public class PrometheusWriteHandler implements HttpRequestHandler {
 		for (Map<String, Object> objectMap : dataList) {
 			// 指标名称
 			String metricsName = (String) objectMap.get("name");
+			// 指标过滤
 			if (metricsFilter == null || metricsFilter.match(metricsName)) {
 				log.info("metricsName:{} 发送到 kafka", metricsName);
 				// 组装 kafka 数据
