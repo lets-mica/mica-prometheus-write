@@ -37,6 +37,10 @@ remote_write:
 
 Note: For more configurations, please refer to: https://prometheus.io/docs/prometheus/latest/configuration/configuration/#remote_write
 
+## 🎨 Results show
+
+![kafka](docs/image/kafka.png)
+
 ## 🍻 My Open Source Projects
 
 - `mica-mqtt`: A simple and easy-to-use Java MQTT client and server: [https://gitee.com/dromara/mica-mqtt](https://gitee.com/dromara/mica-mqtt)

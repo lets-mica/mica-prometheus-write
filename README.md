@@ -4,7 +4,7 @@ Mica-Prometheus-Write 是一个用于处理 Prometheus 远程写入请求的 Jav
 
 ---
 
-✨✨✨**推广**✨✨✨ [**BladeX 物联网平台(「mica-mqtt加强版」+「EMQX+Kafka插件」双架构)**](https://iot.bladex.cn?from=mica-mqtt)
+🎉🎉🎉**推广**🎉🎉🎉 [**BladeX 物联网平台(「mica-mqtt加强版」+「EMQX+Kafka插件」双架构)**](https://iot.bladex.cn?from=mica-mqtt)
 
 ## ✨ 项目特点
 
@@ -40,6 +40,10 @@ remote_write:
 ```
 
 注意：更多配置请查看：https://prometheus.io/docs/prometheus/latest/configuration/configuration/#remote_write
+
+## 🎨 效果展示
+
+![kafka](docs/image/kafka.png)
 
 ## 🍻 我的开源
 - `mica-mqtt` 简单易用的 Java mqtt 客户端和服务端：[https://gitee.com/dromara/mica-mqtt](https://gitee.com/dromara/mica-mqtt)
