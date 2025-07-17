@@ -99,4 +99,16 @@ public class ConfigLoader {
 		return kafkaProps;
 	}
 
+	/**
+	 * 获取认证配置
+	 *
+	 * @return BasicAuthProperties
+	 */
+	public BasicAuthProperties getBasicAuthProperties() {
+		String basicAuthEnable = this.getProperty("auth.basic_auth.enable", "false").toLowerCase();
+		String basicAuthUsername = this.getProperty("auth.basic_auth.username", null);
+		String basicAuthPassword = this.getProperty("auth.basic_auth.password", null);
+		return new BasicAuthProperties("true".equals(basicAuthEnable), basicAuthUsername, basicAuthPassword);
+	}
+
 }
