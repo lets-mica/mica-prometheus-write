@@ -1,5 +1,6 @@
 package net.dreamlu.mica.prometheus.write.config;
 
+import net.dreamlu.mica.prometheus.write.utils.MetricsFilter;
 import org.tio.utils.hutool.ResourceUtil;
 import org.tio.utils.hutool.StrUtil;
 
@@ -109,6 +110,19 @@ public class ConfigLoader {
 		String basicAuthUsername = this.getProperty("auth.basic_auth.username", null);
 		String basicAuthPassword = this.getProperty("auth.basic_auth.password", null);
 		return new BasicAuthProperties("true".equals(basicAuthEnable), basicAuthUsername, basicAuthPassword);
+	}
+
+	/**
+	 * 指标过滤器
+	 *
+	 * @return MetricFilter
+	 */
+	public MetricsFilter getMetricsFilter() {
+		String metricsFilter = this.getProperty("metrics.filter");
+		if (StrUtil.isBlank(metricsFilter)) {
+			return null;
+		}
+		return MetricsFilter.from(metricsFilter);
 	}
 
 }

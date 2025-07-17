@@ -3,6 +3,7 @@ package net.dreamlu.mica.prometheus.write.handler;
 import lombok.extern.slf4j.Slf4j;
 import net.dreamlu.mica.prometheus.write.config.BasicAuthProperties;
 import net.dreamlu.mica.prometheus.write.config.ConfigLoader;
+import net.dreamlu.mica.prometheus.write.utils.MetricsFilter;
 import net.dreamlu.mica.prometheus.write.utils.PromPbUtils;
 import net.dreamlu.mica.prometheus.write.utils.SnappyUtils;
 import org.apache.kafka.clients.producer.Producer;
@@ -30,11 +31,13 @@ public class PrometheusWriteHandler implements HttpRequestHandler {
 	private static final String BASIC_AUTH_HEADER_NAME = "authorization";
 	private static final String AUTHORIZATION_PREFIX = "Basic ";
 	private final String basicAuthToken;
+	private final MetricsFilter metricsFilter;
 	private final String sendTopic;
 	private final Producer<String, Object> producer;
 
 	public PrometheusWriteHandler(ConfigLoader config, Producer<String, Object> producer) {
 		this.basicAuthToken = getBasicToken(config.getBasicAuthProperties());
+		this.metricsFilter = config.getMetricsFilter();
 		this.sendTopic = config.getSendTopic();
 		this.producer = producer;
 	}
@@ -72,12 +75,17 @@ public class PrometheusWriteHandler implements HttpRequestHandler {
 		for (Map<String, Object> objectMap : dataList) {
 			// 指标名称
 			String metricsName = (String) objectMap.get("name");
-			// 组装 kafka 数据
-			ProducerRecord<String, Object> record = new ProducerRecord<>(
-				sendTopic, metricsName, JsonUtil.toJsonBytes(objectMap)
-			);
-			// 发送 kafka
-			producer.send(record);
+			if (metricsFilter == null || metricsFilter.match(metricsName)) {
+				log.info("metricsName:{} 发送到 kafka", metricsName);
+				// 组装 kafka 数据
+				ProducerRecord<String, Object> record = new ProducerRecord<>(
+					sendTopic, metricsName, JsonUtil.toJsonBytes(objectMap)
+				);
+				// 发送 kafka
+				producer.send(record);
+			} else {
+				log.info("metricsName:{} 不符合 metrics.filter 配置规则，已过滤", metricsName);
+			}
 		}
 		// 正常返回 204
 		return respStatus(request, HttpResponseStatus.C204);
