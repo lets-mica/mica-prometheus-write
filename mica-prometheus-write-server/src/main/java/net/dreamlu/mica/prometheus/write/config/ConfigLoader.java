@@ -118,11 +118,7 @@ public class ConfigLoader {
 	 * @return MetricFilter
 	 */
 	public MetricsFilter getMetricsFilter() {
-		String metricsFilter = this.getProperty("metrics.filter");
-		if (StrUtil.isBlank(metricsFilter)) {
-			return null;
-		}
-		return MetricsFilter.from(metricsFilter);
+		return MetricsFilter.from(this.getProperty("metrics.filter"));
 	}
 
 }

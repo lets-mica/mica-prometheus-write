@@ -19,12 +19,18 @@ public class MetricsFilter {
 	private static final Pattern PATTERN = Pattern.compile("[,;]");
 	private final List<Predicate<String>> filterPredicate = new ArrayList<>();
 
+	/**
+	 * 构造 MetricsFilter，可能为 null
+	 *
+	 * @param patterns patterns
+	 * @return MetricsFilter
+	 */
 	public static MetricsFilter from(String patterns) {
-		MetricsFilter filter = new MetricsFilter();
-		// 如果规则为空
+		// 如果规则为空，直接返回 null
 		if (StrUtil.isBlank(patterns)) {
-			return filter;
+			return null;
 		}
+		MetricsFilter filter = new MetricsFilter();
 		String[] patternArray = PATTERN.split(patterns);
 		for (String pattern : patternArray) {
 			filter.addPattern(pattern);
@@ -47,7 +53,7 @@ public class MetricsFilter {
 		}
 		// 判断是否为前缀匹配（不包含特殊正则字符）
 		if (isSimplePrefixPattern(pattern)) {
-			this.addFilter(s -> s.startsWith(pattern));
+			this.addFilter(s -> s.startsWith(pattern.substring(0, pattern.length() - 1)));
 		} else {
 			this.addFilter(s -> Pattern.compile(pattern).matcher(s).matches());
 		}
