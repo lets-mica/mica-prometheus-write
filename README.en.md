@@ -1,6 +1,6 @@
-# Mica-Prometheus-Write
+# mica-prometheus-write
 
-Mica-Prometheus-Write is a Java implementation project for handling Prometheus remote write requests (currently supports writing to Kafka). This project is primarily used to receive, decode, and process remote write data from Prometheus, which can be used to build storage backends or forwarding services for Prometheus data.
+mica-prometheus-write is a Java implementation project for handling Prometheus remote write requests (currently supports writing to Kafka). This project is primarily used to receive, decode, and process remote write data from Prometheus, which can be used to build storage backends or forwarding services for Prometheus data.
 
 ## ✨ Project Features
 
