@@ -33,7 +33,7 @@ mvn clean package
 # 开启远程写出
 remote_write:
     - url: "http://127.0.0.1:8080/write"
-#      protobuf_message: io.prometheus.write.v2.Request # 开启 prometheus v2 版 protobuf 消息格式，v2 版消息更加紧凑，默认：v1
+#      protobuf_message: io.prometheus.write.v2.Request # 开启 v2 版，消息更加紧凑，默认：prometheus.WriteRequest v1版
 #      basic_auth:  # 开启基础认证
 #          username: xxxxxx
 #          password: xxxxxx
