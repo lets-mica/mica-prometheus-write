@@ -27,8 +27,12 @@ public class ConfigLoader {
 	};
 
 	public ConfigLoader() {
+		// 1. 加载配置文件中的配置
 		loadPropertiesFromFiles();
+		// 2. 加载环境变量中的配置
 		loadPropertiesFromEnv();
+		// 3. 初始化 tinylog 日志配置
+		initTinyLogProperties();
 	}
 
 	private void loadPropertiesFromFiles() {
@@ -60,6 +64,15 @@ public class ConfigLoader {
 		});
 		// 系统属性次之
 		properties.putAll(System.getProperties());
+	}
+
+	private void initTinyLogProperties() {
+		// 筛选所有以 "tinylog."开头的配置项
+		for (String propertyName : properties.stringPropertyNames()) {
+			if (propertyName.startsWith("tinylog.")) {
+				System.setProperty(propertyName, properties.getProperty(propertyName));
+			}
+		}
 	}
 
 	public String getProperty(String key) {
