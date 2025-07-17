@@ -59,7 +59,7 @@ public class ConfigLoader {
 		// 系统环境变量优先级最高
 		System.getenv().forEach((key, value) -> {
 			// 将环境变量名转换为properties风格的key（如DATABASE_URL -> database.url）
-			String propKey = key.toLowerCase().replace("_", ".");
+			String propKey = key.toLowerCase().replace('_', '.');
 			properties.put(propKey, value);
 		});
 		// 系统属性次之
