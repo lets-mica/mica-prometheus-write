@@ -77,7 +77,7 @@ public class PrometheusWriteHandler implements HttpRequestHandler {
 			String metricsName = (String) objectMap.get("name");
 			// 指标过滤
 			if (metricsFilter == null || metricsFilter.match(metricsName)) {
-				log.info("metricsName:{} 发送到 kafka", metricsName);
+				log.info("metrics:{} 发送到 kafka", metricsName);
 				// 组装 kafka 数据
 				ProducerRecord<String, Object> record = new ProducerRecord<>(
 					sendTopic, metricsName, JsonUtil.toJsonBytes(objectMap)
@@ -85,7 +85,7 @@ public class PrometheusWriteHandler implements HttpRequestHandler {
 				// 发送 kafka
 				producer.send(record);
 			} else {
-				log.info("metricsName:{} 不符合 metrics.filter 配置规则，已过滤", metricsName);
+				log.info("metrics:{} 不符合 metrics.filter 配置规则，已过滤", metricsName);
 			}
 		}
 		// 正常返回 204
