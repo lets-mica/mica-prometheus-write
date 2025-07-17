@@ -8,7 +8,7 @@
     <packaging>pom</packaging>
 
     <name>${project.artifactId}</name>
-    <description>Mica prometheus write server!</description>
+    <description>Mica prometheus write server</description>
     <url>https://www.dreamlu.net</url>
 
     <properties>
@@ -97,9 +97,9 @@
     </developers>
 
     <scm>
-        <connection>scm:git:git@gitee.com/dromara/mica-mqtt</connection>
-        <developerConnection>scm:git:git@gitee.com/dromara/mica-mqtt.git</developerConnection>
-        <url>git@gitee.com/dromara/mica-mqtt.git</url>
+        <connection>scm:git:git@gitee.com/596392912/mica-prometheus-write</connection>
+        <developerConnection>scm:git:git@gitee.com/596392912/mica-prometheus-write.git</developerConnection>
+        <url>git@gitee.com/596392912/mica-prometheus-write.git</url>
     </scm>
 
     <build>
