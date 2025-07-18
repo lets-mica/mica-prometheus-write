@@ -52,6 +52,7 @@ public class PrometheusWriteHandler implements HttpRequestHandler {
 		}
 		// 基础认证。是否认证成功
 		if (!basicAuth(basicAuthToken, request)) {
+			log.error("认证失败，请确认 prometheus remote_write 是否开启 basic_auth");
 			return respStatus(request, HttpResponseStatus.C401);
 		}
 		// 解压缩 content-encoding -> snappy
