@@ -32,13 +32,13 @@ public class PrometheusWriteHandler implements HttpRequestHandler {
 	private static final String AUTHORIZATION_PREFIX = "Basic ";
 	private final String basicAuthToken;
 	private final MetricsFilter metricsFilter;
-	private final String sendTopic;
+	private final String metricsSendTopic;
 	private final Producer<String, Object> producer;
 
 	public PrometheusWriteHandler(ConfigLoader config, Producer<String, Object> producer) {
 		this.basicAuthToken = getBasicToken(config.getBasicAuthProperties());
 		this.metricsFilter = config.getMetricsFilter();
-		this.sendTopic = config.getSendTopic();
+		this.metricsSendTopic = config.getMetricsSendTopic();
 		this.producer = producer;
 	}
 
@@ -80,7 +80,7 @@ public class PrometheusWriteHandler implements HttpRequestHandler {
 				log.info("metrics:{} 发送到 kafka", metricsName);
 				// 组装 kafka 数据
 				ProducerRecord<String, Object> record = new ProducerRecord<>(
-					sendTopic, metricsName, JsonUtil.toJsonBytes(objectMap)
+					metricsSendTopic, metricsName, JsonUtil.toJsonBytes(objectMap)
 				);
 				// 发送 kafka
 				producer.send(record);

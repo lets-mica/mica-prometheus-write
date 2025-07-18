@@ -91,8 +91,8 @@ public class ConfigLoader {
 		return Integer.parseInt(getProperty("server.port", "8080"));
 	}
 
-	public String getSendTopic() {
-		return getProperty("send.topic", "metrics");
+	public String getMetricsSendTopic() {
+		return getProperty("metrics.send.topic", "metrics");
 	}
 
 	/**
