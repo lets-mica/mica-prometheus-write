@@ -8,10 +8,7 @@ import net.dreamlu.mica.prometheus.write.utils.PromPbUtils;
 import net.dreamlu.mica.prometheus.write.utils.SnappyUtils;
 import org.apache.kafka.clients.producer.Producer;
 import org.apache.kafka.clients.producer.ProducerRecord;
-import org.tio.http.common.HttpRequest;
-import org.tio.http.common.HttpResponse;
-import org.tio.http.common.HttpResponseStatus;
-import org.tio.http.common.RequestLine;
+import org.tio.http.common.*;
 import org.tio.http.common.handler.HttpRequestHandler;
 import org.tio.utils.hutool.StrUtil;
 import org.tio.utils.json.JsonUtil;
@@ -47,7 +44,7 @@ public class PrometheusWriteHandler implements HttpRequestHandler {
 		RequestLine requestLine = request.getRequestLine();
 		String path = requestLine.getPath();
 		// 暴露的端点，默认为 /write
-		if (!"/write".equals(path)) {
+		if (!"/write".equals(path) || !Method.POST.equals(requestLine.method)) {
 			return resp404(request);
 		}
 		// 基础认证。是否认证成功
