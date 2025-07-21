@@ -1,8 +1,10 @@
 package net.dreamlu.mica.prometheus.write.handler;
 
+import com.alibaba.fastjson2.JSON;
 import lombok.extern.slf4j.Slf4j;
 import net.dreamlu.mica.prometheus.write.config.BasicAuthProperties;
 import net.dreamlu.mica.prometheus.write.config.ConfigLoader;
+import net.dreamlu.mica.prometheus.write.pojo.CountInfo;
 import net.dreamlu.mica.prometheus.write.utils.MetricsFilter;
 import net.dreamlu.mica.prometheus.write.utils.PromPbUtils;
 import net.dreamlu.mica.prometheus.write.utils.SnappyUtils;
@@ -11,11 +13,9 @@ import org.apache.kafka.clients.producer.ProducerRecord;
 import org.tio.http.common.*;
 import org.tio.http.common.handler.HttpRequestHandler;
 import org.tio.utils.hutool.StrUtil;
-import org.tio.utils.json.JsonUtil;
 
 import java.nio.charset.StandardCharsets;
 import java.util.Base64;
-import java.util.List;
 import java.util.Map;
 
 /**
@@ -63,31 +63,37 @@ public class PrometheusWriteHandler implements HttpRequestHandler {
 		}
 		// 处理版本 x-prometheus-remote-write-version -> 0.1.0
 		String prometheusRemoteWriteVersion = request.getHeader("x-prometheus-remote-write-version");
-		// 处理不同版本的数据
-		List<Map<String, Object>> dataList;
+		HttpResponse httpResponse = new HttpResponse(request);
+		// 处理不同版本的数据，0.1.0 为 v1 版协议
 		if ("0.1.0".equals(prometheusRemoteWriteVersion)) {
-			dataList = PromPbUtils.decodeWriteRequestV1(decompressed);
+			// 解码、过滤并发送数据
+			PromPbUtils.decodeWriteRequestV1(decompressed, metricsFilter, this::sendToKafka);
 		} else {
-			dataList = PromPbUtils.decodeWriteRequestV2(decompressed);
-		}
-		for (Map<String, Object> objectMap : dataList) {
-			// 指标名称
-			String metricsName = (String) objectMap.get("name");
-			// 指标过滤
-			if (metricsFilter == null || metricsFilter.match(metricsName)) {
-				log.info("metrics:{} 发送到 kafka", metricsName);
-				// 组装 kafka 数据
-				ProducerRecord<String, Object> record = new ProducerRecord<>(
-					metricsSendTopic, metricsName, JsonUtil.toJsonBytes(objectMap)
-				);
-				// 发送 kafka
-				producer.send(record);
-			} else {
-				log.info("metrics:{} 不符合 metrics.filter 配置规则，已过滤", metricsName);
-			}
+			// v2 版本需要返回数量
+			CountInfo countInfo = PromPbUtils.decodeWriteRequestV2(decompressed, metricsFilter, this::sendToKafka);
+			httpResponse.addHeader("X-Prometheus-Remote-Write-Samples-Written", countInfo.getSamplesCount());
+			httpResponse.addHeader("X-Prometheus-Remote-Write-Histograms-Written", countInfo.getHistogramsCount());
+			httpResponse.addHeader("X-Prometheus-Remote-Write-Exemplars-Written", countInfo.getExemplarsCount());
 		}
 		// 正常返回 204
-		return respStatus(request, HttpResponseStatus.C204);
+		httpResponse.setStatus(HttpResponseStatus.C204);
+		return httpResponse;
+	}
+
+	/**
+	 * 发送到 kafka
+	 *
+	 * @param metricsName 指标名称
+	 * @param dataMap     dataMap
+	 */
+	private void sendToKafka(String metricsName, Map<String, Object> dataMap) {
+		// 组装 kafka 数据
+		ProducerRecord<String, Object> record = new ProducerRecord<>(
+			metricsSendTopic, metricsName, JSON.toJSONBytes(dataMap)
+		);
+		// 发送 kafka
+		log.info("metrics:{} 发送到 kafka", metricsName);
+		producer.send(record);
 	}
 
 	/**
