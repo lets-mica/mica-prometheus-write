@@ -59,7 +59,7 @@ public class PrometheusWriteHandler implements HttpRequestHandler {
 		if ("snappy".equals(contentEncoding)) {
 			decompressed = SnappyUtils.decompress(requestBody);
 		} else {
-			throw new IllegalArgumentException("未知的 Content-Encoding，仅仅支持 snappy");
+			throw new IllegalArgumentException("未知的 Content-Encoding:" + contentEncoding + "，仅仅支持 snappy");
 		}
 		// 处理版本 x-prometheus-remote-write-version -> 0.1.0
 		String prometheusRemoteWriteVersion = request.getHeader("x-prometheus-remote-write-version");
