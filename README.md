@@ -37,6 +37,11 @@ remote_write:
 #      basic_auth:  # 开启基础认证
 #          username: xxxxxx
 #          password: xxxxxx
+#      write_relabel_configs:
+#        # 必须列出所有需要传输的指标名
+#        - source_labels: [__name__]
+#          regex: "kafka_topic_partition_current_offset|kafka_topic_partitions"
+#          action: keep
 ```
 
 注意：更多配置请查看：https://prometheus.io/docs/prometheus/latest/configuration/configuration/#remote_write
