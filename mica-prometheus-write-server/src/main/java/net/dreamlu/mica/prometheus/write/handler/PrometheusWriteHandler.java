@@ -45,7 +45,7 @@ public class PrometheusWriteHandler implements HttpRequestHandler {
 		String path = requestLine.getPath();
 		// 暴露的端点，默认为 /write
 		if (!"/write".equals(path) || !Method.POST.equals(requestLine.method)) {
-			return resp404(request);
+			return resp404(request, requestLine);
 		}
 		// 基础认证。是否认证成功
 		if (!basicAuth(basicAuthToken, request)) {

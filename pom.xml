@@ -13,14 +13,14 @@
 
     <properties>
         <!--  version -->
-        <revision>2025.07.20-SNAPSHOT</revision>
+        <revision>2025.07.20</revision>
         <!-- java version -->
         <java.version>1.8</java.version>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <maven-jar-plugin.version>3.4.2</maven-jar-plugin.version>
         <maven-flatten.version>1.7.1</maven-flatten.version>
         <!-- mica-net version -->
-        <mica-net.version>1.1.14-SNAPSHOT</mica-net.version>
+        <mica-net.version>1.1.16</mica-net.version>
         <tinylog.version>2.7.0</tinylog.version>
         <lombok.version>1.18.38</lombok.version>
         <junit-jupiter.version>5.13.3</junit-jupiter.version>
