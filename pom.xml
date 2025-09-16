@@ -23,7 +23,7 @@
         <mica-net.version>1.1.16</mica-net.version>
         <tinylog.version>2.7.0</tinylog.version>
         <lombok.version>1.18.40</lombok.version>
-        <junit-jupiter.version>5.13.3</junit-jupiter.version>
+        <junit-jupiter.version>5.13.4</junit-jupiter.version>
     </properties>
 
     <modules>
